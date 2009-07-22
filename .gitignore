@@ -7,3 +7,4 @@ vendor/plugins/slicehost_recipes
 config/deploy.yml
 *.swp
 config/database.yml
+db/*.sqlite3
