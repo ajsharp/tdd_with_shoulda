@@ -1,0 +1,9 @@
+.DS_Store
+log/*.log
+tmp/**/*
+.svn
+*.tmproj
+vendor/plugins/slicehost_recipes
+config/deploy.yml
+*.swp
+config/database.yml
