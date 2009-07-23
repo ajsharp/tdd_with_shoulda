@@ -1,45 +1,57 @@
 require 'test_helper'
 
 class PostsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:posts)
-  end
-
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create post" do
-    assert_difference('Post.count') do
-      post :create, :post => { }
+  context "public actions" do
+    setup do
+      Post.create(:title => "Post", :body => "...")
     end
+    
+    context "GET index /posts" do
+      setup do
+        get :index
+      end
 
-    assert_redirected_to post_path(assigns(:post))
-  end
+      should "assign to @posts an array of Post models" do
+        assert_instance_of(Array, assigns(:posts))
+        assert_instance_of(Post, assigns(:posts).first)
+      end
 
-  test "should show post" do
-    get :show, :id => posts(:one).to_param
-    assert_response :success
-  end
+      should_respond_with :success
+      should_render_template :index
+      should_assign_to :posts
+      should_route :get, "/posts", :controller => "posts", :action => :index
+    end # end of GET index /posts
+    
+    context "GET show /posts/post-title" do
+      setup do
+        @post = Post.create(:title => "Post Title", :body => "...")
+        get :show, :id => @post.permalink
+      end
 
-  test "should get edit" do
-    get :edit, :id => posts(:one).to_param
-    assert_response :success
-  end
-
-  test "should update post" do
-    put :update, :id => posts(:one).to_param, :post => { }
-    assert_redirected_to post_path(assigns(:post))
-  end
-
-  test "should destroy post" do
-    assert_difference('Post.count', -1) do
-      delete :destroy, :id => posts(:one).to_param
-    end
-
-    assert_redirected_to posts_path
-  end
+      should_respond_with :success
+      should_render_template :show
+      should_assign_to :post
+      should_route :get, "/posts/post-title", :controller => "posts", :action => :show, :id => "post-title"
+    end # end of GET index /posts
+    
+    # context "GET index /posts" do
+    #   setup do
+    #     get :index
+    #   end
+    # 
+    #   should "assign to @posts an array of Post models" do
+    #     assert_instance_of(Array, assigns(:posts))
+    #     assert_instance_of(Post, assigns(:posts).first)
+    #   end
+    # 
+    #   should_respond_with :success
+    #   should_render_template :index
+    #   should_assign_to :posts
+    #   should_route :get, "/posts", :controller => "posts", :action => :index
+    # end # end of GET index /posts
+    
+    
+    
+  end # end of public actionx  
+  
 end
